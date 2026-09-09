@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgroVerdade - Verificador de Informações</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f3f7f1;
+            color: #1d3324;
+        }
+
+        header {
+            background: linear-gradient(135deg, #14532d, #2e7d32);
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 22px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #c8e6c9;
+        }
+
+        .hero {
+            min-height: 570px;
+            padding: 80px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            background:
+                linear-gradient(rgba(12, 55, 25, .80), rgba(12, 55, 25, .80)),
+                url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80")
+                center/cover;
+            color: white;
+        }
+
+        .hero-text {
+            max-width: 650px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #8bc34a;
+            color: #102313;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        .button:hover {
+            background: #aed581;
+            transform: translateY(-2px);
+        }
+
+        .hero-card {
+            background: rgba(255,255,255,.96);
+            color: #17351f;
+            padding: 30px;
+            border-radius: 20px;
+            width: 330px;
+            box-shadow: 0 15px 40px rgba(0,0,0,.25);
+        }
+
+        .hero-card h3 {
+            margin-bottom: 15px;
+        }
+
+        .hero-card p {
+            color: #555;
+            font-size: 15px;
+        }
+
+        section {
+            padding: 70px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #617064;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.07);
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #236b36;
+        }
+
+        .card p {
+            line-height: 1.6;
+            color: #59645c;
+        }
+
+        #verificador {
+            background: #e8f5e9;
+        }
+
+        .checker {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.08);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            resize: vertical;
+            border: 2px solid #d5dfd6;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 16px;
+            outline: none;
+            margin: 15px 0;
+        }
+
+        textarea:focus {
+            border-color: #4caf50;
+        }
+
+        .checker .button {
+            width: 100%;
+        }
+
+        #resultado {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 15px;
+            background: #fff8e1;
+            border-left: 6px solid #f9a825;
+        }
+
+        #resultado h3 {
+            margin-bottom: 15px;
+        }
+
+        .score {
+            margin: 20px 0;
+            height: 18px;
+            background: #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #barra {
+            height: 100%;
+            width: 0%;
+            background: #f9a825;
+            transition: 1s;
+        }
+
+        .resultado-item {
+            margin-top: 10px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #2e7d32;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .sources {
+            background: #fff;
+        }
+
+        .source-list {
+            max-width: 900px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .source {
+            padding: 20px;
+            background: #f5f8f5;
+            border-radius: 12px;
+            border-left: 5px solid #4caf50;
+        }
+
+        .warning {
+            max-width: 900px;
+            margin: 40px auto 0;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 12px;
+            color: #6b5300;
+        }
+
+        footer {
+            background: #123b20;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        footer p {
+            margin-top: 8px;
+            color: #c9d8cc;
+        }
+
+        @media (max-width: 800px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 7px;
+                font-size: 13px;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero-card {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .cards,
+            .steps,
+            .source-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">🌱 AgroVerdade</div>
+
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#problema">Problema</a>
+        <a href="#verificador">Verificar</a>
+        <a href="#dicas">Dicas</a>
+    </nav>
+
+</header>
+
+
+<section class="hero" id="inicio">
+
+    <div class="hero-text">
+
+        <h1>Informação certa para decisões melhores.</h1>
+
+        <p>
+            O AgroVerdade é uma plataforma criada para ajudar
+            produtores, estudantes e consumidores a identificar
+            possíveis informações falsas relacionadas ao agronegócio.
+        </p>
+
+        <a href="#verificador" class="button">
+            🔎 Verificar informação
+        </a>
+
+    </div>
+
+    <div class="hero-card">
+
+        <h3>🛡️ Por que verificar?</h3>
+
+        <p>
+            Uma informação falsa sobre clima, produção, preços,
+            pragas ou técnicas agrícolas pode causar decisões
+            equivocadas e prejuízos.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section id="problema">
+
+    <div class="section-title">
+
+        <h2>O problema</h2>
+
+        <p>
+            A desinformação também pode chegar ao campo.
+        </p>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="icon">🌦️</div>
+
+            <h3>Clima</h3>
+
+            <p>
+                Boatos sobre chuva, seca, tempestades,
+                geadas e previsões meteorológicas.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🌾</div>
+
+            <h3>Produção</h3>
+
+            <p>
+                Informações incorretas sobre pragas,
+                plantações, técnicas e produtos agrícolas.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">💰</div>
+
+            <h3>Mercado</h3>
+
+            <p>
+                Notícias falsas sobre preços, exportações,
+                importações e mercado agrícola.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="verificador">
+
+    <div class="section-title">
+
+        <h2>🔎 Verificador de informações</h2>
+
+        <p>
+            Cole abaixo o texto de uma notícia ou informação
+            que você deseja analisar.
+        </p>
+
+    </div>
+
+
+    <div class="checker">
+
+        <label for="noticia">
+            <strong>Digite ou cole a informação:</strong>
+        </label>
+
+        <textarea
+            id="noticia"
+            placeholder="Exemplo: 'Uma nova técnica agrícola aumenta a produção em 300%...'">
+        </textarea>
+
+        <button class="button" onclick="verificar()">
+            🔎 ANALISAR INFORMAÇÃO
+        </button>
+
+
+        <div id="resultado">
+
+            <h3 id="tituloResultado">
+                🟡 Análise concluída
+            </h3>
+
+            <p id="textoResultado"></p>
+
+            <div class="score">
+                <div id="barra"></div>
+            </div>
+
+            <div class="resultado-item">
+                <strong>Indicador de atenção:</strong>
+                <span id="porcentagem"></span>
+            </div>
+
+            <div class="resultado-item">
+                <strong>Fonte:</strong>
+                <span id="fonte">Não informada</span>
+            </div>
+
+            <div class="resultado-item">
+                <strong>Recomendação:</strong>
+                <span id="recomendacao"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section>
+
+    <div class="section-title">
+
+        <h2>Como funciona?</h2>
+
+        <p>
+            O processo é simples.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">1</div>
+
+            <h3>Cole a informação</h3>
+
+            <p>
+                Insira uma notícia, mensagem ou informação
+                recebida nas redes sociais.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">2</div>
+
+            <h3>Analise</h3>
+
+            <p>
+                O sistema procura sinais que indicam
+                necessidade de verificação.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">3</div>
+
+            <h3>Confira</h3>
+
+            <p>
+                Procure confirmação em fontes oficiais
+                e instituições confiáveis.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="dicas">
+
+    <div class="section-title">
+
+        <h2>🧠 Como identificar Fake News?</h2>
+
+        <p>
+            Antes de compartilhar, faça estas verificações.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="icon">🔍</div>
+
+            <h3>Confira a fonte</h3>
+
+            <p>
+                Veja quem publicou a informação e se a fonte
+                é conhecida e confiável.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">📅</div>
+
+            <h3>Veja a data</h3>
+
+            <p>
+                Uma notícia antiga pode voltar a circular
+                como se fosse atual.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">⚠️</div>
+
+            <h3>Desconfie de exageros</h3>
+
+            <p>
+                Títulos muito alarmantes ou promessas
+                extraordinárias merecem atenção.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🔗</div>
+
+            <h3>Compare fontes</h3>
+
+            <p>
+                Procure a mesma informação em outras
+                fontes independentes.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🏛️</div>
+
+            <h3>Procure fontes oficiais</h3>
+
+            <p>
+                Dê preferência a órgãos públicos,
+                universidades e instituições de pesquisa.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🚫</div>
+
+            <h3>Não compartilhe imediatamente</h3>
+
+            <p>
+                Pare, verifique e só depois decida
+                se deve compartilhar.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="sources">
+
+    <div class="section-title">
+
+        <h2>📚 Onde pesquisar?</h2>
+
+        <p>
+            Para uma verificação real, procure informações em fontes confiáveis.
+        </p>
+
+    </div>
+
+
+    <div class="source-list">
+
+        <div class="source">
+            🏛️ Órgãos públicos e instituições oficiais
+        </div>
+
+        <div class="source">
+            🎓 Universidades e instituições de pesquisa
+        </div>
+
+        <div class="source">
+            🌦️ Instituições meteorológicas
+        </div>
+
+        <div class="source">
+            🌾 Instituições reconhecidas do setor agropecuário
+        </div>
+
+    </div>
+
+
+    <div class="warning">
+
+        ⚠️ <strong>Atenção:</strong>
+        este site é um protótipo desenvolvido para a
+        Maratona Tech. A análise automática apresentada
+        não confirma definitivamente se uma informação é
+        verdadeira ou falsa. Sempre confira fontes confiáveis
+        antes de tomar decisões importantes.
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <h2>🌱 AgroVerdade</h2>
+
+    <p>
+        Informação certa para decisões melhores.
+    </p>
+
+    <p>
+        Projeto desenvolvido para a Maratona Tech.
+    </p>
+
+</footer>
+
+
+<script>
+
+function verificar() {
+
+    const noticia = document
+        .getElementById("noticia")
+        .value
+        .trim();
+
+    const resultado = document.getElementById("resultado");
+
+    const titulo = document.getElementById("tituloResultado");
+
+    const texto = document.getElementById("textoResultado");
+
+    const barra = document.getElementById("barra");
+
+    const porcentagem = document.getElementById("porcentagem");
+
+    const recomendacao = document.getElementById("recomendacao");
+
+
+    if (noticia.length < 20) {
+
+        alert("Digite uma informação maior para realizar a análise.");
+
+        return;
+
+    }
+
+
+    /*
+        Esta é uma análise demonstrativa.
+        Ela NÃO comprova que uma notícia é verdadeira ou falsa.
+    */
+
+    let risco = 15;
+
+
+    const palavrasDeRisco = [
+
+        "urgente",
+        "milagre",
+        "inacreditável",
+        "100%",
+        "garantido",
+        "segredo",
+        "compartilhe",
+        "última chance",
+        "ninguém quer que você saiba",
+        "vai acabar",
+        "cura",
+        "amanhã"
+
+    ];
+
+
+    const textoMinusculo = noticia.toLowerCase();
+
+
+    palavrasDeRisco.forEach(function(palavra) {
+
+        if (textoMinusculo.includes(palavra)) {
+
+            risco += 7;
+
+        }
+
+    });
+
+
+    if (noticia.includes("http://") ||
+        noticia.includes("https://")) {
+
+        risco -= 5;
+
+    }
+
+
+    if (risco < 5) risco = 5;
+
+    if (risco > 95) risco = 95;
+
+
+    resultado.style.display = "block";
+
+
+    barra.style.width = risco + "%";
+
+    porcentagem.textContent = risco + "%";
+
+
+    if (risco >= 60) {
+
+        titulo.innerHTML = "🔴 Alta necessidade de verificação";
+
+        texto.textContent =
+            "A informação apresenta alguns sinais que merecem atenção. Isso NÃO significa que ela seja falsa. Verifique a fonte, a data e procure confirmação em outras fontes confiáveis.";
+
+        recomendacao.textContent =
+            "Não compartilhe antes de confirmar a informação.";
+
+        barra.style.background = "#e53935";
+
+        resultado.style.background = "#ffebee";
+
+    }
+
+    else if (risco >= 30) {
+
+        titulo.innerHTML = "🟡 Atenção: verifique a informação";
+
+        texto.textContent =
+            "Foram encontrados alguns sinais que indicam que a informação deve ser conferida antes de ser compartilhada.";
+
+        recomendacao.textContent =
+            "Compare com fontes oficiais e outras fontes independentes.";
+
+        barra.style.background = "#f9a825";
+
+        resultado.style.background = "#fff8e1";
+
+    }
+
+    else {
+
+        titulo.innerHTML = "🟢 Baixa necessidade de atenção";
+
+        texto.textContent =
+            "A análise encontrou poucos sinais de alerta. Mesmo assim, isso não comprova que a informação seja verdadeira.";
+
+        recomendacao.textContent =
+            "Continue verificando a fonte e a data da publicação.";
+
+        barra.style.background = "#43a047";
+
+        resultado.style.background = "#e8f5e9";
+
+    }
+
+
+    resultado.scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+</script>
+
+</body>
+</html>
